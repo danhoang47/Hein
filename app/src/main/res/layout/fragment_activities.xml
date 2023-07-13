@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.fragment.IncomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            >
+
+            <TextView
+                android:id="@+id/activities_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Activities"
+                android:layout_marginTop="16dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="left"
+                android:layout_marginBottom="16dp"
+                />
+
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:layout_below="@+id/activities_label"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/activities_bar_chart"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/dashboard_label_part"
+                android:layout_height="wrap_content"
+                android:text="Transactions"
+                android:layout_marginTop="16dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="left"
+                />
+
+            <com.hein.activities.DynamicHeightListView
+                android:layout_below="@id/dashboard_label_part"
+                android:id="@+id/dashboard_noti_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                />
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.core.widget.NestedScrollView>

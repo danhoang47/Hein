@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#d2d4d8</color>
+    <color name="persian_rose">#F72585</color>
+    <color name="purple">#7209B7</color>
+    <color name="blue_gem">#3A0CA3</color>
+    <color name="royal_blue">#4361EE</color>
+    <color name="picton_blue">#4CC9F0</color>
+    <color name="zircon">#f5f6ff</color>
+    <color name="bottom_bar_background">#EDEBEB</color>
+    <color name="bottom_bar_background_round">#452828</color>
+    <color name="price_color">#3CB29A</color>
+    <color name="buy_btn_color">#2B2D40</color>
+    <color name="sub_text_color">#878992</color>
+    <color name="dashboard_income_progress_color">#FF6B90</color>
+    <color name="dashboard_income_spend_color">#01A9F5</color>
+    <color name="lightGrey">#808080</color>
+    <color name="duskYellow">#FFD700</color>
+</resources>
