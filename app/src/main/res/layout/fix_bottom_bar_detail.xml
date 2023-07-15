@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_left_background"
-
+                    android:id="@+id/add_cart_btn"
                     android:textColor="@color/white"
                     android:shadowColor="@android:color/white"
                     android:text="1"
