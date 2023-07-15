@@ -57,8 +57,12 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
     String timeReview[] = {"12:30", "14:34", "15:50", "19:20", "12:12"};
     int givenPoint[] ={3, 4, 4, 5, 2};
     String userAvatar[] = {"https://fastly.picsum.photos/id/769/200/300.jpg?hmac=cl3KEs924CuE_nF1wC98S7NBc8JPXkf0hlwtPXGIIhM", "https://fastly.picsum.photos/id/717/200/300.jpg?hmac=OJYQhMLNcYlN5qz8IR345SJ7t6A0vyHzT_RdMxO4dSc", "https://fastly.picsum.photos/id/254/200/300.jpg?hmac=VoOUXxjWvbLuWPBSHy_pbMAoLSYCaO-3drnOhwvA2yY", "https://fastly.picsum.photos/id/256/200/300.jpg?hmac=6-SQmUqIECHQ4QadM7mAYY3sHPH5r_8e2pCBs7V67Sc", "https://fastly.picsum.photos/id/504/200/300.jpg?hmac=mycti8qYrnGcag5zUhsVOq7hQwb__R-Zf--aBJAH_ec"};
-    List<String> itemList = Arrays.asList("Red", "Blue", "Green");
-    List<String> itemListSize = Arrays.asList("XL", "L", "M", "S");
+
+    /* Color String ["Red", "Blue", "Green"]*/
+    List<String> itemList = new ArrayList<>();
+
+    /* size String ["XL", "L", "M", "S"]*/
+    List<String> itemListSize = new ArrayList<>();
     List<String> itemListColor = Arrays.asList("#FF0000", "#0000FF", "#00FF00");
 
 
@@ -80,6 +84,8 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
     private RadioBuyBtnAdapter adapter;
 
+    private String featurePic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,22 +104,37 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
          productPrice = (TextView) findViewById(R.id.detailed_product_price);
         filterTextView = (TextView) findViewById(R.id.filter);
         buyBtn = (Button) findViewById(R.id.product_buy_btn);
+        addCartBtn = (Button) findViewById(R.id.add_cart_btn);
+
+
+        String productId = intent.getStringExtra("productId");
 
          addReviewBtn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 showReviewDialog("xnJNFIe8KoGheyJXrLWf", "qf2pApIMmGjbPKB1Mh8F");
+                 showReviewDialog(HomeActivity.currentUser.getId(), productId);
              }
          });
 
         filterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showFiltelDialog("qf2pApIMmGjbPKB1Mh8F");
+                showFiltelDialog(productId);
             }
         });
 
-        String productId = intent.getStringExtra("productId");
+        addCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (HomeActivity.currentUser == null) {
+                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
+                    loginDialogFragment.show(getSupportFragmentManager(), "loginDialog");
+                } else {
+
+                    showBuyingDialog(HomeActivity.currentUser.getId(), productId, "cart");
+                }
+            }
+        });
 
         buyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +143,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                     loginDialogFragment.show(getSupportFragmentManager(), "loginDialog");
                 } else {
-                    showBuyingDialog(HomeActivity.currentUser.getId(), productId);
+                    showBuyingDialog(HomeActivity.currentUser.getId(), productId, "buy");
                 }
             }
         });
@@ -130,7 +151,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
 
         fetchData(productId);
-        fetchDataReviews("qf2pApIMmGjbPKB1Mh8F");
+        fetchDataReviews(productId);
         /*fetchDataUserTest("xnJNFIe8KoGheyJXrLWf");*/
 
     }
@@ -230,7 +251,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         dialog.show();
     }
 
-    private void showBuyingDialog(String userId, String productId) {
+    private void showBuyingDialog(String userId, String productId, String type) {
 
         Booking booking = new Booking();
         booking.setProductId(productId);
@@ -309,13 +330,23 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         quantitySelection.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.e("quantity value", "old val " + oldVal + " new val " + newVal);
                 booking.setQuantity(newVal);
                }
         });
 
         /*Buying button clicked*/
         buySelectionBtn = (Button) dialogView.findViewById(R.id.okButton);
+
+        switch (type) {
+            case "buy": {
+                buySelectionBtn.setText("Booking");
+                break;
+            }
+            case "cart": {
+                buySelectionBtn.setText("Add to cart");
+                break;
+            }
+        }
 
         final AlertDialog dialog = builder.create();
 
@@ -335,12 +366,26 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
                 Log.i("Quantity", booking.getQuantity() + "");
 
-                int productPriceVal = Integer.parseInt(productPrice.getText().toString().substring(1));
+                float productPriceVal = (float) Double.parseDouble(productPrice.getText().toString().substring(1));
 
                 booking.setTotalPrice(booking.getQuantity() * productPriceVal);
 
-                bookingAProduct(booking);
+                switch (type) {
+                    case "buy": {
+                        bookingAProduct(booking);
+                        break;
+                    }
+                    case "cart": {
+                        Log.i("Add cart info", booking.toString());
+                        Log.i("feature", featurePic);
+                        Toast.makeText(DetailedActivity.this, booking.toString(), Toast.LENGTH_SHORT).show();
+
+                        break;
+                    }
+                }
+
                 dialog.dismiss();
+
             }
         });
 
@@ -390,11 +435,26 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     productGender.setText(String.join(", ", productDisplay.getClassifications()));
                     productPrice.setText("$"+productDisplay.getPrice());
 
+                    for (Map.Entry<String,Integer> entry : productDisplay.getSizes().entrySet()) {
+                        System.out.println("Key = " + entry.getKey() +
+                                ", Value = " + entry.getValue());
+                        itemListSize.add(entry.getKey());
+                    }
+
+                    for(String color : productDisplay.getColors()) {
+                        itemList.add(color);
+                    }
+
+
+
+
                     ArrayList<SlideModel> slideModels = new ArrayList<>();
 
                     for(String product : productDisplay.getImages()) {
                         slideModels.add(new SlideModel(product, ScaleTypes.FIT));
                     }
+
+                    featurePic = productDisplay.getImages().get(0);
 
                     imageSlider.setImageList(slideModels, ScaleTypes.FIT);
 
@@ -441,7 +501,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                             // Get a reference to the User document using the userId
                             DocumentReference userRef = db.collection("User").document("xnJNFIe8KoGheyJXrLWf");
 
-                            Log.i("Review data", review.toString());
 
 
 
@@ -454,7 +513,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                                         review.setUserReviewName(user.getName());
                                         review.setUserAvatar(user.getAvatar());
 
-                                        Log.i("User review avatar", review.getUserAvatar() + "");
 
                                         reviews.add(review);
 
@@ -538,8 +596,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                             // Get a reference to the User document using the userId
                             DocumentReference userRef = db.collection("User").document("xnJNFIe8KoGheyJXrLWf");
 
-                            Log.i("Review data", review.toString());
-
 
 
                             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -551,7 +607,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                                         review.setUserReviewName(user.getName());
                                         review.setUserAvatar(user.getAvatar());
 
-                                        Log.i("User review avatar", review.getUserAvatar() + "");
 
                                         reviews.add(review);
 
@@ -640,6 +695,10 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if(documentSnapshot.exists()) {
                                     Product updateProduct = documentSnapshot.toObject(Product.class);
+
+                                    Log.i("booking", booking.toString());
+
+                                    Log.i("sizes", updateProduct.getSizes().get(booking.getSize()).toString());
 
                                     if(updateProduct.getQuantity()-booking.getQuantity() < 0 || updateProduct.getSizes().get(booking.getSize()) - booking.getQuantity() < 0) {
                                         Toast.makeText(DetailedActivity.this, "This product is not available now", Toast.LENGTH_SHORT).show();
