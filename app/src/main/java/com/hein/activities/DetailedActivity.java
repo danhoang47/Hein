@@ -3,6 +3,8 @@ package com.hein.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.hein.activities.adapters.ColorBookingdatper;
 import com.hein.activities.adapters.RadioBuyBtnAdapter;
 import com.hein.activities.adapters.ReviewsListAdapter;
 import com.hein.entity.Booking;
@@ -43,11 +46,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import com.hein.R;
 import com.hein.entity.User;
 import com.hein.home.HomeActivity;
+import com.hein.home.filter.ColorRVAdatper;
+import com.hein.home.filter.ColorViewModel;
+import com.hein.home.filter.FilterViewModel;
 import com.hein.home.login.LoginDialogFragment;
 
 public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAdapter.RadioButtonClickListener {
@@ -85,6 +94,14 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
     private RadioBuyBtnAdapter adapter;
 
     private String featurePic;
+
+    ColorBookingdatper colorBookingdatper;
+
+    private FilterViewModel filterViewModel;
+
+    int selectedColorPosition = -1;
+
+    Set<String> bookingColor = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +268,21 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         dialog.show();
     }
 
+
+    public void initColorRV(View view, List<String> colorsList, Booking booking) {
+        List<ColorViewModel> colors = new ArrayList<>();
+
+        for(String color : colorsList) {
+            colors.add(new ColorViewModel(color, color, false));
+        }
+
+        RecyclerView recyclerView = view.findViewById(R.id.colorFilterRV);
+        colorBookingdatper = new ColorBookingdatper(getApplicationContext(), colors, bookingColor, selectedColorPosition, booking);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(colorBookingdatper);
+    }
+
     private void showBuyingDialog(String userId, String productId, String type) {
 
         Booking booking = new Booking();
@@ -266,11 +298,18 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         booking.setProductName(productNameStr);
 
 
+        initColorRV(dialogView, itemList, booking);
+
+
+
+        booking.setColor(bookingColor.stream().findFirst().orElse(null));
+
+
         /*Display color selection*/
-        colorSelection = dialogView.findViewById(R.id.color_selection);
+        /*colorSelection = dialogView.findViewById(R.id.color_selection);
 
         for(int i =0 ;i<itemList.size(); i++) {
-            /*RadioButton radioButton = new RadioButton(this);*/
+            *//*RadioButton radioButton = new RadioButton(this);*//*
             RadioButton radioButton = (RadioButton) inflater.inflate(R.layout.item_radio_button, colorSelection, false);
 
             GradientDrawable drawable = new GradientDrawable();
@@ -281,19 +320,19 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
             radioButton.setTag(itemList.get(i));
             Log.i("Itemlist", itemList.get(i).toString());
             radioButton.setId(View.generateViewId());
-            /*radioButton.setBackgroundColor(Color.parseColor(itemListColor.get(i)));*/
+            *//*radioButton.setBackgroundColor(Color.parseColor(itemListColor.get(i)));*//*
             radioButton.setBackground(drawable);
             radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*String selectedValue = ((RadioButton) view).getText().toString();*/
+                    *//*String selectedValue = ((RadioButton) view).getText().toString();*//*
                     String selectedValue = (String) view.getTag();
                     booking.setColor(selectedValue);
                     onRadioButtonClicked(selectedValue);
                 }
             });
             colorSelection.addView(radioButton);
-        }
+        }*/
 
 
         /*Display size selection*/
@@ -357,6 +396,10 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
             public void onClick(View view) {
                 if(booking.getColor()==null || booking.getColor().length() == 0) {
                     Toast.makeText(DetailedActivity.this, "Please pick one color", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(bookingColor.size()>1) {
+                    Toast.makeText(DetailedActivity.this, "Only pick one color pls", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(booking.getSize()==null || booking.getSize().length() == 0) {
