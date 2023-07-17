@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hein.activities.DetailedActivity;
 import com.hein.entity.Product;
 import com.hein.R;
@@ -24,6 +27,9 @@ public class ProductRVAdapter extends RecyclerView.Adapter<ProductRVAdapter.View
     private List<Product> products;
     private LayoutInflater mInflater;
     private Context context;
+    FirebaseFirestore db;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
 
     private OnProductClickListener onProductClickListener;
     ProductRVAdapter(Context context, List<Product> data, OnProductClickListener onProductClickListener) {
@@ -31,7 +37,7 @@ public class ProductRVAdapter extends RecyclerView.Adapter<ProductRVAdapter.View
         this.products = data;
         this.context = context;
         this.onProductClickListener = onProductClickListener;
-
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -47,6 +53,25 @@ public class ProductRVAdapter extends RecyclerView.Adapter<ProductRVAdapter.View
         holder.productType.setText(product.getType());
         holder.productName.setText(product.getName());
         holder.productPrice.setText(product.getPrice() + "$");
+
+        String imagePath = product.getImages().get(0);
+
+        if (imagePath.contains("https://")) {
+            Glide.with(context)
+                    .load(imagePath)
+                    .into(holder.productImage);
+        } else {
+            int index = imagePath.indexOf("images/");
+            String pathString = imagePath.substring(index);
+            StorageReference imageRef = storageRef.child(pathString);
+
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                Glide.with(context)
+                        .load(uri)
+                        .into(holder.productImage);
+            });
+
+        }
 
         Glide
                 .with(context)

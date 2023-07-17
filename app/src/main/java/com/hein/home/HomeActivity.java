@@ -27,6 +27,7 @@ import com.hein.home.filter.FilterDialogFragment;
 import com.hein.home.filter.FilterViewModel;
 import com.hein.home.login.LoginDialogFragment;
 import com.hein.home.login.LoginViewModel;
+import com.hein.shoppingcart.ShoppingCartActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,9 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
         initClassificationRV();
         fetchProduct(this::initProductRV);
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        initNavigationBoard();
+
         openFilterBtn = findViewById(R.id.open_filter_btn);
         openFilterBtn.setOnClickListener(view -> showFilterDialog());
 
@@ -72,6 +76,46 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
         fetchUserFromLocalStorage();
     }
 
+    public void initNavigationBoard() {
+
+        bottomNavigationView.setSelectedItemId(R.id.page_home);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.page_setting) {
+                // WARNING: TESTING PURPOSE ONLY
+//                startActivity(new Intent(getApplicationContext(), TestActivity.class));
+//                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.page_shopping_cart) {
+                if (currentUser == null) {
+                    showLoginDialog();
+                    return false;
+                } else {
+                    Intent intent = new Intent(this, ShoppingCartActivity.class);
+                    intent.putExtra("userId", currentUser.getId());
+                    overridePendingTransition(0, 0);
+                    startActivity(intent);
+                    return true;
+                }
+            } else if (itemId == R.id.page_setting) {
+                if (currentUser == null) {
+                    showLoginDialog();
+                    return false;
+                } else {
+                    // NOTE: Account Setting Intent
+                    Intent intent = new Intent(this, ShoppingCartActivity.class);
+                    intent.putExtra("userId", currentUser.getId());
+                    overridePendingTransition(0, 0);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+
+            return false;
+        });
+    }
+
     @Override
     public void onProductClick(String productId) {
         Intent detailIntent = new Intent(getApplicationContext(), DetailedActivity.class);
@@ -81,12 +125,14 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
 
     public void observeLoginViewModel() {
         loginViewModel.loginState.observe(this, observer -> {
-            if (loginViewModel.loginState.getValue() == true) {
+            if (loginViewModel.loginState.getValue()) {
                 Toast.makeText(
                         this,
                         "Welcome back, " + currentUser.getName(),
                         Toast.LENGTH_SHORT)
                 .show();
+
+                Log.i("MSG", "User Id: " + currentUser.getId());
             } else {
 
             }
@@ -267,6 +313,7 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.page_home);
         if (HomeActivity.currentUser != null) {
             loginViewModel.setLoginState(true);
         }

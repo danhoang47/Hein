@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeActivity"
->
+    tools:context=".ordered_product.OrderActivity">
+
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.AppCompat"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@color/gray"
-            android:theme="@style/Theme.AppCompat">
-            <ImageView
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/_5481ed1b702433e886c6017507fa371"
-                app:layout_collapseMode="parallax"
-                />
+            app:statusBarScrim="@color/gray">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/header_bar"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
                 android:contentInsetStart="0dp"
                 android:contentInsetLeft="0dp"
                 android:contentInsetEnd="0dp"
@@ -40,7 +37,6 @@
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
                 app:contentInsetStart="0dp"
-                android:background="@android:color/transparent"
                 app:layout_collapseMode="pin">
 
                 <LinearLayout
@@ -94,71 +90,34 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/arimo_bold"
+        android:text="Ordered Products"
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-        android:orientation="vertical"
-        android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/classificationRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginVertical="20dp"
-            />
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingVertical="20dp"
-            android:layout_marginHorizontal="10dp"
-            android:background="#F3F3F3">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/arimo_bold"
-                android:text="Best Sale Product"
-                android:textFontWeight="800"
-                android:textSize="9pt"
-                android:textColor="@color/black"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/open_filter_btn"
-                android:layout_width="68dp"
-                android:layout_height="32dp"
-                android:gravity="center"
-                android:padding="0dp"
-                android:background="@drawable/button_background"
-                app:backgroundTint="@null"
-                android:text="Filter"
-                android:textColor="#777777"
-                android:textSize="6pt"
-                app:icon="@drawable/outline_filter_list_24"
-                app:iconGravity="textEnd"
-                app:iconSize="16dp"
-                app:iconTint="#777777"
-                />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/productRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            />
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/order_product_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_navigation_menu"
         android:layout_gravity="bottom"
-    />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
+</androidx.constraintlayout.widget.ConstraintLayout>

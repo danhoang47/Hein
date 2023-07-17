@@ -1,9 +1,10 @@
 package com.hein.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Product {
+public class Product implements Serializable {
     private String id;
     private String brand;
     private String category;
@@ -15,6 +16,55 @@ public class Product {
     private int quantity;
     private String type;
     private Map<String, Integer> sizes;
+
+    public Product(String id, String brand, String category, List<String> classifications, List<String> colors, List<String> images, String name, double price, int quantity, String type, Map<String, Integer> sizes) {
+        this.id = id;
+        this.brand = brand;
+        this.category = category;
+        this.classifications = classifications;
+        this.colors = colors;
+        this.images = images;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.type = type;
+        this.sizes = sizes;
+    }
+
+    public Product() {
+
+    }
+
+    public Product(String brand, String category, List<String> classifications,
+                   List<String> colors, List<String> images, String name,
+                   double price, int quantity, String type, Map<String,
+                    Integer> sizes) {
+        this.brand = brand;
+        this.category = category;
+        this.classifications = classifications;
+        this.colors = colors;
+        this.images = images;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.type = type;
+        this.sizes = sizes;
+    }
+
+    public Product(String brand, String category, List<String> classifications,
+                   List<String> colors, String name,
+                   double price, int quantity, String type, Map<String,
+            Integer> sizes) {
+        this.brand = brand;
+        this.category = category;
+        this.classifications = classifications;
+        this.colors = colors;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.type = type;
+        this.sizes = sizes;
+    }
 
     public Map<String, Integer> getSizes() {
         return sizes;
