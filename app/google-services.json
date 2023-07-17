@@ -39,7 +39,36 @@
       "client_info": {
         "mobilesdk_app_id": "1:1003674288819:android:8ed899ef92f5ed298326c6",
         "android_client_info": {
-          "package_name": "com.hein.account"
+          "package_name": "com.example.prm_assignment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003674288819-a5o3k0daddipoir4inkcjre197rol3oo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWnUUwkrRpfaRs4alyT-3hd2gdQxERwjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003674288819-a5o3k0daddipoir4inkcjre197rol3oo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003674288819:android:37d3b4ac145073c28326c6",
+        "android_client_info": {
+          "package_name": "com.hein"
         }
       },
       "oauth_client": [

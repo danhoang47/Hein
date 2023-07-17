@@ -10,7 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {url 'https://jitpack.io'}
     }
 }
-rootProject.name = "PRM-assignment"
+rootProject.name = "Hein"
+
 include ':app'

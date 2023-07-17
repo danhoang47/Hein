@@ -27,6 +27,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.hein.R;
+import com.hein.entity.Booking;
+import com.hein.entity.UserProfile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,7 +40,7 @@ public class AccountDetail   extends AppCompatActivity {
     final Calendar myCalendar= Calendar.getInstance();
     ImageView backIcon;
 
-   public static User user;
+   public static UserProfile user;
     EditText dobText;
     EditText nameText;
     EditText emailText;
@@ -69,6 +72,7 @@ public class AccountDetail   extends AppCompatActivity {
         cancel=findViewById(R.id.cancelButton);
         male=findViewById(R.id.maleSelect);
         emailText=findViewById(R.id.edtEmail);
+        user_document=getIntent().getStringExtra("userId");
 
         DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -87,8 +91,6 @@ public class AccountDetail   extends AppCompatActivity {
         });
         avatar.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            // NOTE: Allowing select multiple images
-            // NOTE: In case of select single image, delete this line
             startActivityForResult(intent, 3);
         });
         fetchUser();
@@ -99,12 +101,12 @@ public class AccountDetail   extends AppCompatActivity {
                 startActivity(new Intent(AccountDetail.this,AccountActivity.class));
             }
         });
-//        backIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(AccountDetail.this,AccountActivity.class));
-//            }
-//        });
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountDetail.this,AccountActivity.class));
+            }
+        });
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,7 +149,7 @@ public class AccountDetail   extends AppCompatActivity {
         document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = new User(documentSnapshot.getString("name"),documentSnapshot.getString("email"),documentSnapshot.getString("dob"),documentSnapshot.getString("job"),documentSnapshot.getString("phone"),documentSnapshot.getString("gender"),documentSnapshot.getString("avatar"));
+                user = new UserProfile(documentSnapshot.getString("name"),documentSnapshot.getString("email"),documentSnapshot.getString("dob"),documentSnapshot.getString("job"),documentSnapshot.getString("phone"),documentSnapshot.getString("gender"),documentSnapshot.getString("avatar"));
                 RadioButton malebutton = findViewById(R.id.maleSelect);
                 RadioButton femalebutton = findViewById(R.id.femaleSelect);
                 nameText.setText(user.getName());
@@ -176,7 +178,7 @@ public class AccountDetail   extends AppCompatActivity {
         if(male.isChecked()) {
             gender = "Male";
         }else{gender= "Female";}
-        User updateUser= new User(nameText.getText().toString(),emailText.getText().toString(),dobText.getText().toString(),jobText.getText().toString(),phoneText.getText().toString(),gender,user.getAvatar());
+        UserProfile updateUser= new UserProfile(nameText.getText().toString(),emailText.getText().toString(),dobText.getText().toString(),jobText.getText().toString(),phoneText.getText().toString(),gender,user.getAvatar());
         Map<String, Object> update = updateUser.toMap();
         dbroot.collection("User").document(user_document).update(update).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

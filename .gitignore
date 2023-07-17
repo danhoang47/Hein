@@ -7,9 +7,21 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+<<<<<<< HEAD
+=======
+/.idea
+>>>>>>> 4314f84bb61bd3665c8251a9b0192639f568d2dd
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+<<<<<<< HEAD
+=======
+/.idea/compiler.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/gradle.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+>>>>>>> 4314f84bb61bd3665c8251a9b0192639f568d2dd

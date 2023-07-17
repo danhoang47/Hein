@@ -1,0 +1,22 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape>
+        <solid android:color="@color/price_color" />
+        <corners
+            android:radius="5dp"
+            android:topLeftRadius="5dp"
+            android:topRightRadius="0dp"
+            android:bottomLeftRadius="5dp"
+            android:bottomRightRadius="0dp" />
+    </shape>
+</item>
+<item
+    android:drawable="@drawable/shopping_cart_white"
+    android:width="20dp"
+    android:height="20dp"
+    android:tint="@android:color/white"
+    android:gravity="center_vertical"
+    android:left="25dp">
+    @price_color
+</item>
+</layer-list>

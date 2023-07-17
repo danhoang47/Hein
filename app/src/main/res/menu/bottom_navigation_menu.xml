@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_home"
+        android:enabled="true"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home"/>
+    <item
+        android:id="@+id/page_voucher"
+        android:enabled="true"
+        android:icon="@drawable/baseline_airplane_ticket_24"
+        android:title="Voucher"/>
+    <item
+        android:id="@+id/page_shopping_cart"
+        android:enabled="true"
+        android:icon="@drawable/baseline_shopping_cart_24"
+        android:title="Cart"/>
+    <item
+        android:id="@+id/page_setting"
+        android:enabled="true"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Setting"/>
+
+
+</menu>
