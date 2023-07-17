@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hein.activities.adapters.ColorBookingdatper;
 import com.hein.activities.adapters.RadioBuyBtnAdapter;
 import com.hein.activities.adapters.ReviewsListAdapter;
@@ -103,6 +105,8 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
     int selectedColorPosition = -1;
 
     Set<String> bookingColor = new HashSet<>();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -461,7 +465,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
     public void fetchData(String productId) {
         db = FirebaseFirestore.getInstance();
 
-        List<Product> product = new ArrayList<>();
         DocumentReference document = db.collection("Product").document(productId);
         document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
