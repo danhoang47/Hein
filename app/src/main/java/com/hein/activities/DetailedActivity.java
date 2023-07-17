@@ -372,14 +372,16 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
                 switch (type) {
                     case "buy": {
+                        booking.setType(1);
                         bookingAProduct(booking);
                         break;
                     }
                     case "cart": {
+                        booking.setType(0);
                         Log.i("Add cart info", booking.toString());
                         Log.i("feature", featurePic);
-                        Toast.makeText(DetailedActivity.this, booking.toString(), Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(DetailedActivity.this, "Added to cart success!!!", Toast.LENGTH_SHORT).show();
+                        // TODO: add to ShoppingCartCollection;
                         break;
                     }
                 }
@@ -390,8 +392,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         });
 
         Log.i("Booking data", booking.toString());
-
-
     }
 
 

@@ -1,7 +1,7 @@
 package com.hein.entity;
 
 public class Booking {
-    private String bookingId;
+    private String id;
     private String userId;
     private String productId;
     private int quantity;
@@ -9,9 +9,13 @@ public class Booking {
     private String color;
     private String timestamp;
 
+    private int status;
+
     private float totalPrice;
 
     private String productName;
+    // type : 0 - cart, 1 - booking
+    private int type;
 
 
 
@@ -25,7 +29,7 @@ public class Booking {
         this.timestamp = timeStamp;
     }*/
 
-    public Booking(String userId, String productId, int quantity, String size, String color, String timestamp, float totalPrice, String productName) {
+    public Booking(String userId, String productId, int quantity, String size, String color, String timestamp, float totalPrice, String productName, int status) {
         this.userId = userId;
         this.productId = productId;
         this.quantity = quantity;
@@ -34,10 +38,27 @@ public class Booking {
         this.timestamp = timestamp;
         this.totalPrice = totalPrice;
         this.productName = productName;
+        this.status = status;
     }
 
 
     public Booking() {
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public float getTotalPrice() {
@@ -56,12 +77,12 @@ public class Booking {
         this.productName = productName;
     }
 
-    public String getBookingId() {
-        return bookingId;
+    public String getId() {
+        return this.id;
     }
 
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -115,7 +136,7 @@ public class Booking {
     @Override
     public String toString() {
         return "Booking{" +
-                "bookingId='" + bookingId + '\'' +
+                "bookingId='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", productId='" + productId + '\'' +
                 ", quantity=" + quantity +

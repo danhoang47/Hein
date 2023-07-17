@@ -18,4 +18,5 @@
     <color name="dashboard_income_spend_color">#01A9F5</color>
     <color name="lightGrey">#808080</color>
     <color name="duskYellow">#FFD700</color>
+    <color name="green">#32CD32</color>
 </resources>
