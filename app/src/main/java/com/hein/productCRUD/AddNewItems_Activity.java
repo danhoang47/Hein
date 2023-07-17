@@ -327,7 +327,11 @@ public class AddNewItems_Activity extends AppCompatActivity {
 
                                     progressDialog.dismiss();
                                     // if data uploaded successfully then show ntoast
+
                                     Toast.makeText(AddNewItems_Activity.this, "Your data Uploaded Successfully", Toast.LENGTH_SHORT).show();
+
+                                    Intent i = new Intent(AddNewItems_Activity.this, ViewAllProductAdminActivity.class);
+                                    startActivity(i);
 
                                 }
                             });
