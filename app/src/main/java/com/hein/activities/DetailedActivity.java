@@ -58,6 +58,7 @@ import com.hein.home.filter.ColorRVAdatper;
 import com.hein.home.filter.ColorViewModel;
 import com.hein.home.filter.FilterViewModel;
 import com.hein.home.login.LoginDialogFragment;
+import com.hein.ordered_product.OrderActivity;
 
 public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAdapter.RadioButtonClickListener {
 
@@ -296,13 +297,10 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
         String productNameStr = productName.getText().toString();
         booking.setProductName(productNameStr);
-
+        booking.setColor(itemList.stream().findFirst().orElse(null));
 
         initColorRV(dialogView, itemList, booking);
 
-
-
-        booking.setColor(bookingColor.stream().findFirst().orElse(null));
 
 
         /*Display color selection*/
@@ -416,16 +414,17 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                 switch (type) {
                     case "buy": {
                         booking.setStatus(0);
-
+                        booking.setType(1);
                         Log.i("booking data", booking.toString());
                         /*bookingAProduct(booking);*/
                         break;
                     }
                     case "cart": {
+                        booking.setType(0);
                         Log.i("Add cart info", booking.toString());
                         Log.i("feature", featurePic);
+                        addProductToShoppingCart(booking);
                         Toast.makeText(DetailedActivity.this, booking.toString(), Toast.LENGTH_SHORT).show();
-
                         break;
                     }
                 }
@@ -434,10 +433,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
             }
         });
-
-        Log.i("Booking data", booking.toString());
-
-
     }
 
 
@@ -490,9 +485,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     for(String color : productDisplay.getColors()) {
                         itemList.add(color);
                     }
-
-
-
 
                     ArrayList<SlideModel> slideModels = new ArrayList<>();
 
@@ -711,6 +703,90 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                 });
     }
 
+    public void addProductToShoppingCart(Booking booking) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+
+        Map<String, Object> bookingData = new HashMap<>();
+        bookingData.put("productId", booking.getProductId());
+        bookingData.put("userId", booking.getUserId());
+        bookingData.put("quantity", booking.getQuantity());
+        bookingData.put("size", booking.getSize());
+        bookingData.put("color", booking.getColor());
+        bookingData.put("timestamp", formatter.format(date));
+        bookingData.put("totalPrice", booking.getTotalPrice());
+        bookingData.put("productName", booking.getProductName());
+        bookingData.put("status", booking.getStatus());
+        bookingData.put("id", "");
+        bookingData.put("type", booking.getType());
+
+        db = FirebaseFirestore.getInstance();
+        // Add a new document with a generated ID
+        db.collection("Booking")
+                .add(bookingData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        DocumentReference productRef = db.collection("Product").document(booking.getProductId());
+                        db.collection("Booking")
+                                        .document(documentReference.getId())
+                                                .update("id", documentReference.getId());
+
+                        productRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.exists()) {
+                                    Product updateProduct = documentSnapshot.toObject(Product.class);
+
+                                    Log.i("booking", booking.toString());
+
+                                    Log.i("sizes", updateProduct.getSizes().get(booking.getSize()).toString());
+
+                                    if(updateProduct.getQuantity()-booking.getQuantity() < 0 || updateProduct.getSizes().get(booking.getSize()) - booking.getQuantity() < 0) {
+                                        Toast.makeText(DetailedActivity.this, "This product is not available now", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    updateProduct.setQuantity(updateProduct.getQuantity()-booking.getQuantity());
+
+                                    updateProduct.getSizes().put(booking.getSize(), updateProduct.getSizes().get(booking.getSize()) - booking.getQuantity());
+
+                                    db.collection("Product").document(booking.getProductId()).set(updateProduct).
+                                            addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(DetailedActivity.this, "Added to cart !!!", Toast.LENGTH_SHORT).show();
+                                                    Log.i("Update quantity", "Update quantity successfully");
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.i("Update quantity", "Update quantity failed");
+                                                }
+                                            });
+
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                                Log.i("message", e.getMessage());
+                                Toast.makeText(DetailedActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(DetailedActivity.this, "Booking failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     public void bookingAProduct(Booking booking) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
@@ -726,6 +802,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         bookingData.put("totalPrice", booking.getTotalPrice());
         bookingData.put("productName", booking.getProductName());
         bookingData.put("status", booking.getStatus());
+        bookingData.put("id", "");
 
         db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID
@@ -736,6 +813,9 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     public void onSuccess(DocumentReference documentReference) {
 
                         DocumentReference productRef = db.collection("Product").document(booking.getProductId());
+                        db.collection("Booking")
+                                .document(documentReference.getId())
+                                .update("id", documentReference.getId());
 
                         productRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
@@ -787,6 +867,13 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(DetailedActivity.this, "Booking failed", Toast.LENGTH_SHORT).show();
                     }
+                }).continueWith(command -> {
+                    Intent intent = new Intent(this, OrderActivity.class);
+                    intent.putExtra("userId", HomeActivity.currentUser.getId());
+                    startActivity(intent);
+                    Toast.makeText(this,"Order success", Toast.LENGTH_LONG).show();
+
+                    return null;
                 });
     }
 }

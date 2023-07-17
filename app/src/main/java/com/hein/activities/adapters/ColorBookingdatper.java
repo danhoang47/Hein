@@ -27,10 +27,6 @@ public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.
     private LayoutInflater mInflater;
     private Resources resources;
     private String packageName;
-    private Set<String> bookingColor;
-
-    private int selectedColorPosition;
-
     private Booking booking;
 
     public ColorBookingdatper(Context context, List<ColorViewModel> data, Set<String> bookingColor, int selectedColorPosition, Booking booking) {
@@ -38,8 +34,6 @@ public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.
         this.colorOptions = data;
         this.resources = context.getResources();
         this.packageName = context.getPackageName();
-        this.bookingColor = bookingColor;
-        this.selectedColorPosition = selectedColorPosition;
         this.booking = booking;
     }
 
@@ -59,28 +53,22 @@ public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.
         holder.colorView.setBackgroundTintList(innerColor);
         holder.border.setBackgroundTintList(borderColor);
 
-        if (bookingColor.contains(colorName)) {
+        if (booking.getColor() != null && booking.getColor().equals(colorName)) {
             holder.border.setBackgroundTintList(innerColor);
         }
 
         holder.border.setOnClickListener(view -> {
-            Log.i("Booking color", bookingColor.toString());
-            if (bookingColor.contains(colorName)) {
+            if (booking.getColor() != null && booking.getColor().equals(colorName)) {
                 booking.setColor(null);
-                bookingColor.remove(colorName);
                 holder.border.setBackgroundTintList(borderColor);
-            } else {
-                booking.setColor(colorName);
-                bookingColor.add(colorName);
-
-                Log.i("Booking color", bookingColor.toString());
-                Log.i("Booking color booking", booking.getColor() + "");
-                holder.border.setBackgroundTintList(innerColor);
+                notifyDataSetChanged();
             }
-
+            else {
+                booking.setColor(colorName);
+                holder.border.setBackgroundTintList(innerColor);
+                notifyDataSetChanged();
+            }
         });
-
-        Log.i("booking color", bookingColor.toString());
     }
 
     private ColorStateList getColorStateListByName(String colorName) {

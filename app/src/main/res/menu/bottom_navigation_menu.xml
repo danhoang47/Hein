@@ -6,18 +6,20 @@
         android:icon="@drawable/baseline_home_24"
         android:title="Home"/>
     <item
-        android:id="@+id/page_setting"
+        android:id="@+id/page_voucher"
         android:enabled="true"
-        android:icon="@drawable/baseline_settings_24"
-        android:title="Setting"/>
+        android:icon="@drawable/baseline_airplane_ticket_24"
+        android:title="Voucher"/>
     <item
         android:id="@+id/page_shopping_cart"
         android:enabled="true"
         android:icon="@drawable/baseline_shopping_cart_24"
         android:title="Cart"/>
     <item
-        android:id="@+id/page_voucher"
+        android:id="@+id/page_setting"
         android:enabled="true"
-        android:icon="@drawable/baseline_airplane_ticket_24"
-        android:title="Voucher"/>
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Setting"/>
+
+
 </menu>

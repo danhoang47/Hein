@@ -17,11 +17,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hein.ConsumerAsyncTask;
 import com.hein.R;
 import com.hein.activities.DetailedActivity;
 import com.hein.entity.Booking;
+import com.hein.home.HomeActivity;
 import com.hein.home.OnProductClickListener;
 import com.hein.ordered_product.OrderActivity;
 import com.hein.ordered_product.OrderedProductAdapter;
@@ -38,6 +40,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements OnProduct
     CartViewModel cartViewModel;
     FirebaseFirestore db;
     private static String userId;
+    public BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,32 @@ public class ShoppingCartActivity extends AppCompatActivity implements OnProduct
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
         Log.i("MSG", userId);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        initNavigationBoard();
         initCartAdapter();
+    }
+
+    public void initNavigationBoard() {
+
+        bottomNavigationView.setSelectedItemId(R.id.page_shopping_cart);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.page_setting) {
+                // WARNING: TESTING PURPOSE ONLY
+//                startActivity(new Intent(getApplicationContext(), TestActivity.class));
+//                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.page_home) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                overridePendingTransition(0, 0);
+                startActivity(intent);
+                return true;
+            }
+
+            return false;
+        });
     }
 
     @Override
@@ -77,6 +105,8 @@ public class ShoppingCartActivity extends AppCompatActivity implements OnProduct
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<Booking> orders = task.getResult().toObjects(Booking.class);
+                        Log.i("MSG", "Shopping Cart size: " + orders.size());
+
                         cartAdapter = new CartAdapter(ShoppingCartActivity.this, orders, cartViewModel, (productId -> {
                             onProductClick(productId);
                         }));
