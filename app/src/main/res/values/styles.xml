@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GreenText" parent="TextAppearance.AppCompat">
+    <item name="android:textColor">#00FF00</item>
+</style>
+    <style name="Header">
+        <item name="android:textColor">#4622d6</item>
+        <item name="android:layout_marginStart">60dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:font">@font/unisansheavy</item>
+    </style>
+    <style name="buttoncancel">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:background">@drawable/button_border</item>
+        <item name="android:alpha">.6</item>
+    </style>
+    <style name="buttonsubmit">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/submit_button</item>
+<!--        <item name="android:alpha">.6</item>-->
+    </style>
+</resources>
