@@ -98,6 +98,18 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
                     startActivity(intent);
                     return true;
                 }
+            } else if (itemId == R.id.page_setting) {
+                if (currentUser == null) {
+                    showLoginDialog();
+                    return false;
+                } else {
+                    // NOTE: Account Setting Intent
+                    Intent intent = new Intent(this, ShoppingCartActivity.class);
+                    intent.putExtra("userId", currentUser.getId());
+                    overridePendingTransition(0, 0);
+                    startActivity(intent);
+                    return true;
+                }
             }
 
             return false;

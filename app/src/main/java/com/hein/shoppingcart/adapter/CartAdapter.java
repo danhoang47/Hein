@@ -117,7 +117,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         });
 
         holder.cartCardItem.setOnClickListener(v -> {
-
+            onProductClickListener.onProductClick(order.getProductId());
         });
     }
 
@@ -157,8 +157,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private void deleteItemFromCart(Booking order, int position) {
         new AlertDialog.Builder(context)
                 .setCancelable(false)
-                .setTitle("Confirm discard changes")
-                .setMessage("Are you sure you want to discard all change to Shopping Cart")
+                .setTitle("Confirm discards changes")
+                .setMessage("Are you sure to remove this product")
                 .setPositiveButton("Yes", (dialog, which) -> {
                     cartViewModel.deletedOrders.getValue().add(order.getId());
                     orders.remove(position);

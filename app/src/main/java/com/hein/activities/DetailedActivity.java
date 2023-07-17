@@ -420,7 +420,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                         booking.setStatus(0);
                         booking.setType(1);
                         Log.i("booking data", booking.toString());
-                        /*bookingAProduct(booking);*/
+                        bookingAProduct(booking);
                         break;
                     }
                     case "cart": {
@@ -428,7 +428,6 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                         Log.i("Add cart info", booking.toString());
                         Log.i("feature", featurePic);
                         addProductToShoppingCart(booking);
-                        Toast.makeText(DetailedActivity.this, booking.toString(), Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -732,60 +731,12 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
 
-                        DocumentReference productRef = db.collection("Product").document(booking.getProductId());
                         db.collection("Booking")
                                         .document(documentReference.getId())
-                                                .update("id", documentReference.getId());
-
-                        productRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                if(documentSnapshot.exists()) {
-                                    Product updateProduct = documentSnapshot.toObject(Product.class);
-
-                                    Log.i("booking", booking.toString());
-
-                                    Log.i("sizes", updateProduct.getSizes().get(booking.getSize()).toString());
-
-                                    if(updateProduct.getQuantity()-booking.getQuantity() < 0 || updateProduct.getSizes().get(booking.getSize()) - booking.getQuantity() < 0) {
-                                        Toast.makeText(DetailedActivity.this, "This product is not available now", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-                                    updateProduct.setQuantity(updateProduct.getQuantity()-booking.getQuantity());
-
-                                    updateProduct.getSizes().put(booking.getSize(), updateProduct.getSizes().get(booking.getSize()) - booking.getQuantity());
-
-                                    db.collection("Product").document(booking.getProductId()).set(updateProduct).
-                                            addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(DetailedActivity.this, "Added to cart !!!", Toast.LENGTH_SHORT).show();
-                                                    Log.i("Update quantity", "Update quantity successfully");
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.i("Update quantity", "Update quantity failed");
-                                                }
-                                            });
-
-                                }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                e.printStackTrace();
-                                Log.i("message", e.getMessage());
-                                Toast.makeText(DetailedActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(DetailedActivity.this, "Booking failed", Toast.LENGTH_SHORT).show();
+                                                .update("id", documentReference.getId())
+                                .addOnSuccessListener(task -> {
+                                    Toast.makeText(getApplicationContext(), "Added to cart !!!", Toast.LENGTH_SHORT).show();
+                                });
                     }
                 });
     }
