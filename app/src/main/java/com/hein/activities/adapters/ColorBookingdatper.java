@@ -61,14 +61,12 @@ public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.
 
         if (bookingColor.contains(colorName)) {
             holder.border.setBackgroundTintList(innerColor);
-            colorViewModel.setSelected(true);
-        } else {
-            colorViewModel.setSelected(false);
         }
 
         holder.border.setOnClickListener(view -> {
             Log.i("Booking color", bookingColor.toString());
             if (bookingColor.contains(colorName)) {
+                booking.setColor(null);
                 bookingColor.remove(colorName);
                 holder.border.setBackgroundTintList(borderColor);
             } else {
@@ -81,6 +79,8 @@ public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.
             }
 
         });
+
+        Log.i("booking color", bookingColor.toString());
     }
 
     private ColorStateList getColorStateListByName(String colorName) {
@@ -89,6 +89,13 @@ public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.
                 null
         );
     }
+
+    /*public void setBackgroundTintList(int positionActive) {
+        for (int i = 0; i < colorOptions.size(); i++) {
+            colorOptions.get(i).setBackgroundTintList(tintList);
+            notifyItemChanged(i);
+        }
+    }*/
 
     @Override
     public int getItemCount() {

@@ -8,10 +8,9 @@ public class Booking {
     private String size;
     private String color;
     private String timestamp;
-
     private float totalPrice;
-
     private String productName;
+    private int status;
 
 
 
@@ -34,6 +33,18 @@ public class Booking {
         this.timestamp = timestamp;
         this.totalPrice = totalPrice;
         this.productName = productName;
+    }
+
+    public Booking(String userId, String productId, int quantity, String size, String color, String timestamp, float totalPrice, String productName, int status) {
+        this.userId = userId;
+        this.productId = productId;
+        this.quantity = quantity;
+        this.size = size;
+        this.color = color;
+        this.timestamp = timestamp;
+        this.totalPrice = totalPrice;
+        this.productName = productName;
+        this.status = status;
     }
 
 
@@ -112,6 +123,14 @@ public class Booking {
         this.timestamp = timeStamp;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Booking{" +
@@ -124,6 +143,7 @@ public class Booking {
                 ", timestamp='" + timestamp + '\'' +
                 ", totalPrice=" + totalPrice +
                 ", productName='" + productName + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

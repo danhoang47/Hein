@@ -147,7 +147,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
                     LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                     loginDialogFragment.show(getSupportFragmentManager(), "loginDialog");
                 } else {
-
+                    Log.i("userId", HomeActivity.currentUser.getId());
                     showBuyingDialog(HomeActivity.currentUser.getId(), productId, "cart");
                 }
             }
@@ -415,7 +415,10 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
                 switch (type) {
                     case "buy": {
-                        bookingAProduct(booking);
+                        booking.setStatus(0);
+
+                        Log.i("booking data", booking.toString());
+                        /*bookingAProduct(booking);*/
                         break;
                     }
                     case "cart": {
@@ -722,6 +725,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         bookingData.put("timestamp", formatter.format(date));
         bookingData.put("totalPrice", booking.getTotalPrice());
         bookingData.put("productName", booking.getProductName());
+        bookingData.put("status", booking.getStatus());
 
         db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID
