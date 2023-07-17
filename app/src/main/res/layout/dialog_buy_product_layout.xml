@@ -26,7 +26,18 @@
             />
 
 
-        <RadioGroup
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/colorFilterRV"
+            android:layout_below="@+id/color_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="left"
+            />
+
+
+        <!--<RadioGroup
             android:id="@+id/color_selection"
             android:layout_below="@+id/color_label"
             android:layout_width="wrap_content"
@@ -35,7 +46,7 @@
 
 
 
-            <!--<RadioButton
+            <RadioButton
 
                 android:id="@+id/maleSelect1"
                 android:layout_width="70dp"
@@ -81,9 +92,9 @@
                 android:button="@android:color/transparent"
                 android:layout_marginEnd="20dp"
                 android:scaleX="1"
-                android:scaleY="1" />-->
+                android:scaleY="1" />
 
-        </RadioGroup>
+        </RadioGroup>-->
 
     </RelativeLayout>
 

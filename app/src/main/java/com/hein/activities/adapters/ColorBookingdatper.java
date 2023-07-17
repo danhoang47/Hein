@@ -1,4 +1,4 @@
-package com.hein.home.filter;
+package com.hein.activities.adapters;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -14,22 +14,33 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hein.R;
+import com.hein.entity.Booking;
+import com.hein.home.filter.ColorViewModel;
+import com.hein.home.filter.FilterViewModel;
 
 import java.util.List;
+import java.util.Set;
 
-public class ColorRVAdatper extends RecyclerView.Adapter<ColorRVAdatper.ViewHolder> {
+public class ColorBookingdatper extends RecyclerView.Adapter<ColorBookingdatper.ViewHolder> {
     private List<ColorViewModel> colorOptions;
     public final static String DEFAULT_COLOR = "zircon";
     private LayoutInflater mInflater;
     private Resources resources;
     private String packageName;
-    private FilterViewModel filterViewModel;
-    public ColorRVAdatper(Context context, List<ColorViewModel> data, FilterViewModel filterViewModel) {
+    private Set<String> bookingColor;
+
+    private int selectedColorPosition;
+
+    private Booking booking;
+
+    public ColorBookingdatper(Context context, List<ColorViewModel> data, Set<String> bookingColor, int selectedColorPosition, Booking booking) {
         this.mInflater = LayoutInflater.from(context);
         this.colorOptions = data;
         this.resources = context.getResources();
         this.packageName = context.getPackageName();
-        this.filterViewModel = filterViewModel;
+        this.bookingColor = bookingColor;
+        this.selectedColorPosition = selectedColorPosition;
+        this.booking = booking;
     }
 
     @Override
@@ -48,20 +59,28 @@ public class ColorRVAdatper extends RecyclerView.Adapter<ColorRVAdatper.ViewHold
         holder.colorView.setBackgroundTintList(innerColor);
         holder.border.setBackgroundTintList(borderColor);
 
-        if (filterViewModel.getColors().contains(colorName)) {
+        if (bookingColor.contains(colorName)) {
             holder.border.setBackgroundTintList(innerColor);
         }
 
         holder.border.setOnClickListener(view -> {
-            if (filterViewModel.getColors().contains(colorName)) {
-                filterViewModel.getColors().remove(colorName);
+            Log.i("Booking color", bookingColor.toString());
+            if (bookingColor.contains(colorName)) {
+                booking.setColor(null);
+                bookingColor.remove(colorName);
                 holder.border.setBackgroundTintList(borderColor);
             } else {
-                filterViewModel.getColors().add(colorName);
+                booking.setColor(colorName);
+                bookingColor.add(colorName);
+
+                Log.i("Booking color", bookingColor.toString());
+                Log.i("Booking color booking", booking.getColor() + "");
                 holder.border.setBackgroundTintList(innerColor);
             }
 
         });
+
+        Log.i("booking color", bookingColor.toString());
     }
 
     private ColorStateList getColorStateListByName(String colorName) {
@@ -71,13 +90,20 @@ public class ColorRVAdatper extends RecyclerView.Adapter<ColorRVAdatper.ViewHold
         );
     }
 
+    /*public void setBackgroundTintList(int positionActive) {
+        for (int i = 0; i < colorOptions.size(); i++) {
+            colorOptions.get(i).setBackgroundTintList(tintList);
+            notifyItemChanged(i);
+        }
+    }*/
+
     @Override
     public int getItemCount() {
         return colorOptions.size();
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {  
         ConstraintLayout border;
         TextView colorView;
 
