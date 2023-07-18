@@ -774,6 +774,7 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
         bookingData.put("productName", booking.getProductName());
         bookingData.put("status", booking.getStatus());
         bookingData.put("id", "");
+        bookingData.put("type", booking.getType());
 
         db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID

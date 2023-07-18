@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/dashboard_label"
                 android:layout_height="wrap_content"
-                android:text="Dashboard"
+                android:text="Product"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/white"
                 android:textSize="25dp"
@@ -29,16 +29,31 @@
                 android:gravity="center"
                 />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/dashboard_label"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_product_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Products"
+                    android:layout_marginHorizontal="12dp"
+                    />
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/dashboard_label_part"
                 android:layout_height="wrap_content"
-                android:text="New notifications"
-                android:layout_marginTop="10dp"
+                android:text="All products"
+                android:layout_marginTop="60dp"
                 android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:gravity="left"
+
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_below="@id/dashboard_label"

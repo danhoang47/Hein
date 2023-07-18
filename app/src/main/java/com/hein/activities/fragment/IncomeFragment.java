@@ -1,5 +1,6 @@
 package com.hein.activities.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.hein.productCRUD.ViewAllProductAdminActivity;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.util.List;
@@ -35,6 +38,8 @@ public class IncomeFragment extends Fragment {
 
     CircularProgressBar totalProgress, averageProgress;
 
+    AppCompatButton manageProductBtn;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -42,6 +47,11 @@ public class IncomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         fetchData();
         View view = inflater.inflate(R.layout.fragment_income, container, false);
+        manageProductBtn = view.findViewById(R.id.btn_product_manage);
+        manageProductBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ViewAllProductAdminActivity.class);
+            startActivity(intent);
+        });
         return view;
     }
 

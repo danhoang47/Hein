@@ -227,9 +227,9 @@ public class FilterDialogFragment extends BottomSheetDialogFragment {
         List<String> productSizes = new ArrayList<>();
 
         productSizes.add("XS");
-        productSizes.add("SM");
-        productSizes.add("MD");
-        productSizes.add("LG");
+        productSizes.add("S");
+        productSizes.add("M");
+        productSizes.add("L");
         productSizes.add("XL");
         productSizes.add("XXL");
 

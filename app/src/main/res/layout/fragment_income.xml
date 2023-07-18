@@ -369,7 +369,21 @@
             </LinearLayout>
 
 
+
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/statistic_label"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_product_manage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Manage Products"
+                android:layout_marginHorizontal="12dp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

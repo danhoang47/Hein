@@ -46,7 +46,7 @@
         android:layout_height="50dp"
         android:layout_gravity="bottom|start"
         android:layout_marginBottom="6dp"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="7pt"
         app:backgroundTint="@color/white"
         app:tint="@color/white"
         android:text="Clear"

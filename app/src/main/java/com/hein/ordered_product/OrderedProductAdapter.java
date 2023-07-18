@@ -1,6 +1,7 @@
 package com.hein.ordered_product;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class OrderedProductAdapter extends RecyclerView.Adapter<OrderedProductAd
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Product product = task.getResult().toObject(Product.class);
+                                Log.i("MSG", product.getName());
                                 String imagePath = product.getImages().get(0);
 
                                 if (imagePath.contains("https://")) {

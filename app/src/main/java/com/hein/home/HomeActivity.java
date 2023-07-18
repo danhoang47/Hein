@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.hein.BaseActivity;
 import com.hein.account.AccountActivity;
+import com.hein.activities.DashboardActivity;
 import com.hein.activities.DetailedActivity;
 import com.hein.home.filter.Classification;
 import com.hein.entity.Product;
@@ -296,6 +297,8 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
                 }
                 else if (id == R.id.dashboard_menu_item) {
                     // TODO: navigation to dashboard
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    startActivity(intent);
                 }
                 return false;
             });

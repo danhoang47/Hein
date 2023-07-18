@@ -98,7 +98,9 @@ public class AccountDetail   extends AppCompatActivity {
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AccountDetail.this,AccountActivity.class));
+                Intent intent = new Intent(getApplicationContext(), AccountDetail.class);
+                intent.putExtra("userId", user_document);
+                startActivity(intent);
             }
         });
         backIcon.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +146,6 @@ public class AccountDetail   extends AppCompatActivity {
         dobText.setText(dateFormat.format(myCalendar.getTime()));
     }
     public void fetchUser(){
-        user_document= "xnJNFIe8KoGheyJXrLWf";
         DocumentReference document =dbroot.collection("User").document(user_document);
         document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -172,8 +173,10 @@ public class AccountDetail   extends AppCompatActivity {
             }
         });
     }
+
+
+
     public void updateUser(){
-        user_document= "xnJNFIe8KoGheyJXrLWf";
         String gender;
         if(male.isChecked()) {
             gender = "Male";
@@ -187,5 +190,6 @@ public class AccountDetail   extends AppCompatActivity {
             }
         });
     }
+
 
 }
