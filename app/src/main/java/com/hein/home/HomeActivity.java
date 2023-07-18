@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.hein.BaseActivity;
+import com.hein.account.AccountActivity;
 import com.hein.activities.DetailedActivity;
 import com.hein.home.filter.Classification;
 import com.hein.entity.Product;
@@ -83,10 +84,16 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
             int itemId = item.getItemId();
 
             if (itemId == R.id.page_setting) {
-                // WARNING: TESTING PURPOSE ONLY
-//                startActivity(new Intent(getApplicationContext(), TestActivity.class));
+                if (currentUser == null) {
+                    showLoginDialog();
+                    return false;
+                } else {
+                Intent intent = new Intent(this, AccountActivity.class);
+                intent.putExtra("userId", currentUser.getId());
+                overridePendingTransition(0, 0);
+                startActivity(intent);
 //                overridePendingTransition(0, 0);
-                return true;
+                return true;}
             } else if (itemId == R.id.page_shopping_cart) {
                 if (currentUser == null) {
                     showLoginDialog();

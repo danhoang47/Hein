@@ -1,5 +1,10 @@
 package com.hein.entity;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Booking {
     private String id;
     private String userId;
@@ -147,5 +152,7 @@ public class Booking {
                 ", productName='" + productName + '\'' +
                 '}';
     }
+
+
 }
 

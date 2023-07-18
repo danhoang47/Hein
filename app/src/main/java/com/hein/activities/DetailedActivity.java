@@ -134,7 +134,13 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
          addReviewBtn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 showReviewDialog(HomeActivity.currentUser.getId(), productId);
+                 if (HomeActivity.currentUser == null) {
+                     LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
+                     loginDialogFragment.show(getSupportFragmentManager(), "loginDialog");
+                 } else {
+                     showReviewDialog(HomeActivity.currentUser.getId(), productId);
+
+                 }
              }
          });
 
@@ -539,10 +545,8 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
 
                             // Get a reference to the User document using the userId
-                            DocumentReference userRef = db.collection("User").document("xnJNFIe8KoGheyJXrLWf");
-
-
-
+                            DocumentReference userRef = db.collection("User")
+                                    .document("xnJNFIe8KoGheyJXrLWf");
 
                             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
@@ -562,9 +566,22 @@ public class DetailedActivity extends AppCompatActivity implements RadioBuyBtnAd
 
 
                                         double averageRatingPointCount = getAveragePoint(reviews);
-                                        averageRatingPoint.setText(averageRatingPointCount + "");
+
+                                        if(averageRatingPointCount == 0 ||
+                                                (averageRatingPointCount + "").length() == 0) {
+                                            averageRatingPoint.setText(0 + "");
+                                        } else {
+                                            averageRatingPoint.setText(averageRatingPointCount + "");
+                                        }
+
                                         averageRatingbar.setRating((float) averageRatingPointCount);
-                                        totalReviewsNumber.setText(reviews.size() + "");
+
+                                        if(reviews.size() == 0) {
+                                            totalReviewsNumber.setText(0 + "");
+                                        } else {
+                                            totalReviewsNumber.setText(reviews.size() + "");
+                                        }
+
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
