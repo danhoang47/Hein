@@ -126,9 +126,10 @@ public class HomeActivity extends BaseActivity implements OnProductClickListener
     public void observeLoginViewModel() {
         loginViewModel.loginState.observe(this, observer -> {
             if (loginViewModel.loginState.getValue()) {
+                String message = "Welcome back, " + (currentUser.getName() == null ? currentUser.getUsername() : currentUser.getName());
                 Toast.makeText(
                         this,
-                        "Welcome back, " + currentUser.getName(),
+                                message,
                         Toast.LENGTH_SHORT)
                 .show();
 
